@@ -23,6 +23,6 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
-          echo ${{ PAT_GH_TOKEN}} | docker login ghcr.io -u pranao-s3hospital --password-stdin
+          echo ${{ secrets.PAT_GH_TOKEN}} | docker login ghcr.io -u pranao-s3hospital --password-stdin
           docker build -t ghcr.io/pranao-s3hospital/google-form-backend:latest .
           docker push ghcr.io/pranao-s3hospital/google-form-backend:latest
