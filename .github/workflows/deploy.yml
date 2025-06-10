@@ -1,0 +1,28 @@
+name: Deploy Spring Boot App
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'corretto'
+          java-version: 17
+
+      - name: Build the application
+        run: mvn clean package
+
+      - name: Build and Push Docker Image
+        run: |
+          echo "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" | docker login ghcr.io -u pranao-s3hospital --password-stdin
+          docker build -t ghcr.io/pranao-s3hospital/google-form-backend:latest .
+          docker push ghcr.io/pranao-s3hospital/google-form-backend:latest
