@@ -13,7 +13,7 @@ import java.security.GeneralSecurityException;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "https://pranao-s3hospital.github.io/")
+@CrossOrigin(origins = "https://pranao-s3hospital.github.io/", allowCredentials = "true")
 public class GoogleFormResponseController {
 
     @Autowired
