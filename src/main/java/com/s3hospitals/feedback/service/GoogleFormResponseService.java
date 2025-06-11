@@ -14,14 +14,18 @@ import com.s3hospitals.feedback.model.RequestParams;
 import com.s3hospitals.feedback.utility.ExcelGenerator;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 
 @Service
@@ -32,8 +36,14 @@ public class GoogleFormResponseService {
     private static final String RANGE = "'Form Responses 1'"; // Define the range
 
     public Sheets getSheetsService() throws IOException, GeneralSecurityException {
-        FileInputStream serviceAccountStream = new FileInputStream("src/main/resources/service-account-key.json");
-        GoogleCredentials credentials = ServiceAccountCredentials.fromStream(serviceAccountStream);
+        String jsonBase64 = System.getenv("SERVICE_ACCOUNT_KEY");
+        String jsonContent = "";
+        if (jsonBase64 != null) {
+            byte[] decodedBytes = Base64.getDecoder().decode(jsonBase64);
+            jsonContent = new String(decodedBytes, StandardCharsets.UTF_8);
+        }
+        InputStream serviceAccount = new ByteArrayInputStream(jsonContent.getBytes(StandardCharsets.UTF_8));
+        GoogleCredentials credentials = ServiceAccountCredentials.fromStream(serviceAccount);
         HttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
         JsonFactory jsonFactory = GsonFactory.getDefaultInstance();
         HttpRequestInitializer requestInitializer = new HttpCredentialsAdapter(credentials);
