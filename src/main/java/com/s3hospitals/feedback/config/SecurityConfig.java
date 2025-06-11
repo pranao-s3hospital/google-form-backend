@@ -26,10 +26,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/public/**").permitAll()
+                        .requestMatchers("/actuator/**").permitAll() // allow actuator
                         .anyRequest().authenticated()
                 )
-                .httpBasic(Customizer.withDefaults()); // Updated syntax
+                .httpBasic(Customizer.withDefaults());
 
         return http.build();
     }
