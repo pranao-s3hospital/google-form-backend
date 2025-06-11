@@ -1,5 +1,6 @@
 package com.s3hospitals.feedback.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -15,6 +16,12 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    @Value("${APP_USER_NAME:default}")
+    private String username;
+
+    @Value("${APP_USER_PASSWORD:default}")
+    private String password;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
@@ -30,8 +37,8 @@ public class SecurityConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         UserDetails user = User.withDefaultPasswordEncoder()
-                .username(System.getenv("username"))
-                .password(System.getenv("password"))
+                .username(username)
+                .password(password)
                 .roles("USER")
                 .build();
         return new InMemoryUserDetailsManager(user);
