@@ -87,6 +87,7 @@ public class GoogleFormResponseService {
                 String timeStampField = (String) row.get(0);
                 if ("Timestamp".equalsIgnoreCase(timeStampField)) {
                     filteredList.add(row);
+                    continue;
                 }
                 List<String> dateFormats = Arrays.asList("M/d/yyyy", "MM/dd/yyyy", "MM/d/yyyy", "M/dd/yyyy");
                 String inputDate = timeStampField.split(" ")[0]; // Example input
