@@ -13,6 +13,7 @@ public class ExcelGenerator {
         Sheet sheet = workbook.createSheet("Feedback Responses");
 
         int rowNum = 0;
+        int maxColumns = 0;
         for (List<Object> rowData : data) {
             Row row = sheet.createRow(rowNum++);
             int colNum = 0;
@@ -20,6 +21,12 @@ public class ExcelGenerator {
                 Cell cell = row.createCell(colNum++);
                 cell.setCellValue(cellData.toString());
             }
+            maxColumns = Math.max(maxColumns, rowData.size()); // track max columns
+        }
+
+        // Auto-size all columns after filling in data
+        for (int i = 0; i < maxColumns; i++) {
+            sheet.autoSizeColumn(i);
         }
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
