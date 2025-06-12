@@ -12,6 +12,8 @@ import com.google.auth.oauth2.GoogleCredentials;
 import com.google.auth.oauth2.ServiceAccountCredentials;
 import com.s3hospitals.feedback.model.RequestParams;
 import com.s3hospitals.feedback.utility.ExcelGenerator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
@@ -30,6 +32,8 @@ import java.util.List;
 
 @Service
 public class GoogleFormResponseService {
+
+    private static Logger logger = LoggerFactory.getLogger(GoogleFormResponseService.class);
 
     private static final String APPLICATION_NAME = "Google Sheets API Java";
     private static final String SPREADSHEET_ID = "1mGas0-O0ejy-tlprK-3x9wqWBUPp1IoyuGXldqx19nw";
@@ -100,6 +104,7 @@ public class GoogleFormResponseService {
                     filteredList.add(row);
                 }
             }
+            logger.info("{} feedbacks found for the requested range of dates.", filteredList.size());
             return ExcelGenerator.generateExcelBytes(filteredList);
         }
     }
