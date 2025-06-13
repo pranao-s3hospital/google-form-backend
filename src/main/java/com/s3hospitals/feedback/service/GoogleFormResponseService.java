@@ -104,7 +104,7 @@ public class GoogleFormResponseService {
                     filteredList.add(row);
                 }
             }
-            logger.info("{} feedbacks found for the requested range of dates.", filteredList.size());
+            logger.info("{} feedbacks found for the requested range of dates.", filteredList.size() - 1);
             return ExcelGenerator.generateExcelBytes(filteredList);
         }
     }
